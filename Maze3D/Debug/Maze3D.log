@@ -1,0 +1,4 @@
+﻿  Źródło.cpp
+f:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\źródło.cpp(19): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+f:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\źródło.cpp(20): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  Maze3D.vcxproj -> F:\WEAiI\semestr 5\Grafika Komputerowa\Maze3D\Debug\Maze3D.exe
