@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <gl/glut.h>
 #include <math.h>
-#include "èrÛd≥o.h"
 
 #define ASPECT_1_1 1
 
