@@ -1,4 +1,4 @@
-﻿  Engine.cpp
-f:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\engine.cpp(17): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
-f:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\engine.cpp(18): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+﻿  DrawMaze.cpp
+f:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\drawmaze.cpp(17): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
+f:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\drawmaze.cpp(27): warning C4244: "inicjowanie": konwersja z "std::streamoff" do "int", możliwa utrata danych
   Maze3D.vcxproj -> F:\WEAiI\semestr 5\Grafika Komputerowa\Maze3D\Debug\Maze3D.exe

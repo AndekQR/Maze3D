@@ -2,6 +2,7 @@
 #include <gl/glut.h>
 #include <math.h>
 #include "Move.hpp"
+#include "DrawMaze.h"
 
 #define ASPECT_1_1 1
 
@@ -153,6 +154,8 @@ int main(int argc, char *argv[]) {
 	glutSpecialUpFunc(specialUpKeys);//obsluga puszczenia klawiszy 
 
 	glEnable(GL_DEPTH_TEST);//wlaczenie bufora z
+
+	DrawMaze maze;
 
 	glutMainLoop();
 
