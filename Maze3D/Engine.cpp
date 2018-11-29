@@ -1,26 +1,25 @@
 #include <stdlib.h>
 #include <gl/glut.h>
 #include <math.h>
+#include "Move.hpp"
 
 #define ASPECT_1_1 1
 
-float xPos = 1, initXPos, xLookAt = 0;
-float zPos = 1, initZPos, zLookAt = 0;
-float speed = 0;
-float angle = 0;
-float turn = 0;
+Move move;
+
 
 void display() {
+	
 
-	angle = angle + turn;
+	move.angle = move.angle + move.turn;
 
 	//Update the camera position based on the current camera speeds
-	xPos = xPos + speed * sin(angle);
-	zPos = zPos + speed * cos(angle);
+	move.xPos = move.xPos + move.speed * sin(move.angle);
+	move.zPos = move.zPos + move.speed * cos(move.angle);
 
 	//update the look-at position based on the current cam position
-	xLookAt = (float)(xPos + sin(angle));
-	zLookAt = (float)(zPos + cos(angle));
+	move.xLookAt = (float)(move.xPos + sin(move.angle));
+	move.zLookAt = (float)(move.zPos + cos(move.angle));
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //czyszczenie buforu koloru i z-buforu
 	
@@ -28,7 +27,7 @@ void display() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	gluLookAt(xPos, 0, zPos, xLookAt, 0, zLookAt, 0, 1, 0);
+	gluLookAt(move.xPos, 0, move.zPos, move.xLookAt, 0, move.zLookAt, 0, 1, 0);
 
 	// kolor krawêdzi szeœcianu
 	glColor3f(0.0, 0.0, 0.0);
@@ -72,46 +71,6 @@ void reshape(int width, int height) {
 	display();
 }
 
-void setPos(float inXPos, float inZPos) {
-	initXPos = inXPos;
-	xPos = inXPos;
-	initZPos = inZPos;
-	zPos = inZPos;
-}
-
-void reset() {
-	xPos = initXPos;
-	zPos = initZPos;
-	angle = 0;
-}
-
-void moveForward(bool move) {
-	if (move) speed = 0.03f;
-	else speed = 0;
-
-}
-
-void moveBackward(bool move) {
-	if (move)
-		speed = -0.03f;
-	else speed = 0;
-}
-
-void turnLeft(bool move) {
-	if (move)
-		turn = 0.05f;
-	else turn = 0;
-}
-
-void turnRight(bool move) {
-	if (move)
-		turn = -0.05f;
-	else turn = 0;
-}
-
-
-
-
 void keyboard(unsigned char key, int x, int y) {
 	switch (key)
 	{
@@ -127,19 +86,19 @@ void specialKeys(int key, int x, int y) {
 	switch (key)
 	{
 	case GLUT_KEY_UP:
-		moveForward(true);
+		move.moveForward(true);
 		display();
 		break;
 	case GLUT_KEY_DOWN:
-		moveBackward(true);
+		move.moveBackward(true);
 		display();
 		break;
 	case GLUT_KEY_LEFT:
-		turnLeft(true);
+		move.turnLeft(true);
 		display();
 		break;
 	case GLUT_KEY_RIGHT:
-		turnRight(true);
+		move.turnRight(true);
 		display();
 		break;
 	default:
@@ -151,16 +110,16 @@ void specialUpKeys(int key, int x, int y) {
 	switch (key)
 	{
 	case GLUT_KEY_UP:
-		moveForward(false);
+		move.moveForward(false);
 		break;
 	case GLUT_KEY_DOWN:
-		moveBackward(false);
+		move.moveBackward(false);
 		break;
 	case GLUT_KEY_LEFT:
-		turnLeft(false);
+		move.turnLeft(false);
 		break;
 	case GLUT_KEY_RIGHT:
-		turnRight(false);
+		move.turnRight(false);
 		break;
 	default:
 		break;
@@ -194,7 +153,6 @@ int main(int argc, char *argv[]) {
 	glutSpecialUpFunc(specialUpKeys);//obsluga puszczenia klawiszy 
 
 	glEnable(GL_DEPTH_TEST);//wlaczenie bufora z
-	setPos(1, 1);
 
 	glutMainLoop();
 
