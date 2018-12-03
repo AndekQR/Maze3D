@@ -7,6 +7,8 @@
 #define ASPECT_1_1 1
 
 Move move;
+DrawMaze maze(move);
+bool isMazeIsDrawn = false;
 
 
 void display() {
@@ -28,14 +30,26 @@ void display() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	gluLookAt(move.xPos, 0, move.zPos, move.xLookAt, 0, move.zLookAt, 0, 1, 0);
+	//gluLookAt(move.xPos, 0.5, move.zPos, move.xLookAt, 0.5, move.zLookAt, 0, 1, 0);
+	gluLookAt(move.xPos, 4, move.zPos, move.xLookAt, 0.5, move.zLookAt, 0, 1, 0); //widok z gory
 
 	// kolor krawêdzi szeœcianu
-	glColor3f(0.0, 0.0, 0.0);
+	//glColor3f(0.0, 0.0, 0.0);
 
-	glutWireCube(10);
-
+	//glutWireCube(10);
 	
+	maze.drawTheMaze();
+	glBegin(GL_LINES);
+		glColor3f(1,0,0);
+		glVertex3f(0, 0, 0);
+		glVertex3f(100, 0, 0);
+		glColor3f(0, 1, 0);
+		glVertex3f(0, 0, 0);
+		glVertex3f(0, 100, 0);
+		glColor3f(0, 0, 1);
+		glVertex3f(0, 0, 0);
+		glVertex3f(0, 0, 100);
+	glEnd();
 
 	glFlush();
 	glutSwapBuffers();
@@ -143,7 +157,7 @@ int main(int argc, char *argv[]) {
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); //podwojne buforowanie, ostatni parametr do z-bufora
-	glutInitWindowSize(400, 400);
+	glutInitWindowSize(600, 600);
 	glutCreateWindow("Maze3D");
 	glutDisplayFunc(display); 
 	glutReshapeFunc(reshape);
@@ -154,8 +168,9 @@ int main(int argc, char *argv[]) {
 	glutSpecialUpFunc(specialUpKeys);//obsluga puszczenia klawiszy 
 
 	glEnable(GL_DEPTH_TEST);//wlaczenie bufora z
-
-	DrawMaze maze;
+	//glDepthFunc(GL_GEQUAL);
+	//glDepthRange(0, 0.1);
+	
 
 	glutMainLoop();
 
