@@ -9,4 +9,5 @@ szerokosc;
 szerokosc labiryntu to oś z
 wysokosc labiryntu to os x
 
-góra labiryntu przylega do osi z
+góra labiryntu przylega do osi x
+lewa strona labiryntu przylega do osi z

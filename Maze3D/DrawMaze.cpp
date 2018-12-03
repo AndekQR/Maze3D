@@ -13,6 +13,10 @@ void DrawMaze::loadTheNetOfMaze(){
 			plik >> charBufor; //pobranie jednego znaku z pliku
 			tabBufor.push_back(charBufor); //i wpisanie go do vectora
 		}
+
+		for (int j = 0; j < tabBufor.size(); j++) {
+			std::cout << tabBufor[j] << "|";
+		}
 	}
 
 	int numberOfData = 0;
@@ -84,7 +88,7 @@ void DrawMaze::wall(){
 //szerokosc labiryntu to oœ z
 //wysokosc labiryntu to os x
 
-void DrawMaze::drawTheWall(bool whereIsWall[], int i, int  j) {
+void DrawMaze::drawTheWall(bool whereIsWall[], int j, int  i) {
 	if (whereIsWall[0]) {//gora
 		glPushMatrix();
 		glTranslatef(sizeOfOneCell*(i), 0, sizeOfOneCell*(j));
@@ -125,9 +129,9 @@ bool DrawMaze::drawTheMaze(){
 	glBegin(GL_QUADS); //podloga
 		glColor3f(0, 0, 0);
 		glVertex3f(0, 0, 0);
-		glVertex3f(0, 0, 1*widthOfMaze*sizeOfOneCell);
-		glVertex3f(1*heightOfMaze*sizeOfOneCell, 0, 1*widthOfMaze*sizeOfOneCell);
-		glVertex3f(1*heightOfMaze*sizeOfOneCell, 0, 0);
+		glVertex3f(0, 0, 1*heightOfMaze*sizeOfOneCell);
+		glVertex3f(1*widthOfMaze*sizeOfOneCell, 0, 1*heightOfMaze*sizeOfOneCell);
+		glVertex3f(1*widthOfMaze*sizeOfOneCell, 0, 0);
 	glEnd();
 		
 	//glColor3f(0.3, 0.2, 0.2);
@@ -161,47 +165,47 @@ bool DrawMaze::drawTheMaze(){
 			if (netOfMaze[i][j] == 'o') {
 				bool wall[] = {false,false,false,false };//gora, prawa, dol, lewa
 				if (i == 0) {
-					wall[3] = true;
-					if (netOfMaze[i + 1][j] == 'x') { //zagwarantowane jest ze rozmiar labiryntu to co najmiej 2x2
-						wall[1] = true;
-					}
-				}
-				if (j == 0) {
 					wall[0] = true;
-					if (netOfMaze[i][j + 1] == 'x') {
+					if (netOfMaze[i + 1][j] == 'x') { //zagwarantowane jest ze rozmiar labiryntu to co najmiej 2x2
 						wall[2] = true;
 					}
 				}
+				if (j == 0) {
+					wall[3] = true;
+					if (netOfMaze[i][j + 1] == 'x') {                           //tutaj i to os z | j to os x
+						wall[1] = true;
+					}
+				}
 				if (i == (heightOfMaze - 1)) {
-					wall[1] = true;
+					wall[2] = true;
 					if (netOfMaze[i - 1][j] == 'x') {
-						wall[3] = true;
+						wall[0] = true;
 					}
 				}
 				if (j == (widthOfMaze - 1)) {
-					wall[2] = true;
+					wall[1] = true;
 					if (netOfMaze[i][j - 1] == 'x') {
-						wall[0] = true;
+						wall[3] = true;
 					}
 				}
 				if (i > 0 ) {//lewo 
 					if (netOfMaze[i - 1][j] == 'x') {
-						wall[3] = true;
+						wall[0] = true;
 					}
 				}
 				if (i < (heightOfMaze - 1)) {//prawo
 					if (netOfMaze[i + 1][j] == 'x') {
-						wall[1] = true;
+						wall[2] = true;
 					}
 				}
 				if ( j<(widthOfMaze-1)) {//dol 
 					if (netOfMaze[i][j + 1] == 'x') {
-						wall[2] = true;
+						wall[1] = true;
 					}
 				}
 				if ( j > 0) {//gora
 					if (netOfMaze[i][j - 1] == 'x') {
-						wall[0] = true;
+						wall[3] = true;
 					}
 				}
 
