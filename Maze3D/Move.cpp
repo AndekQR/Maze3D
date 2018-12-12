@@ -1,4 +1,5 @@
 #include "Move.hpp"
+#include <iostream>
 
 
 void Move::setPos(float inXPos, float inZPos) {
@@ -6,6 +7,7 @@ void Move::setPos(float inXPos, float inZPos) {
 	xPos = inXPos;
 	initZPos = inZPos;
 	zPos = inZPos;
+	
 }
 
 void Move::reset() {

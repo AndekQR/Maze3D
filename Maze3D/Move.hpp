@@ -2,8 +2,8 @@
 class Move
 {
 public:
-	float xPos = 1, initXPos, xLookAt = 0;
-	float zPos = 1, initZPos, zLookAt = 0;
+	float xPos=1 , initXPos, xLookAt = 0;
+	float zPos=1 , initZPos, zLookAt = 0;
 	float speed = 0;
 	float angle = 0;
 	float turn = 0;

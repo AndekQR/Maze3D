@@ -10,7 +10,7 @@ class DrawMaze
 {
 
 private:
-	Move move;
+	Move* move = NULL;
 	int startingPositionOfTheMaze=0; //pozycja od ktorej w buforze zaczyna sie labirynt
 	char** netOfMaze; //wzór na podstawie ktorego jest rysowany labirynt  x-rysuj blok, o-nie rysuj, s-punkt startowy, e-punkt koncowy
 	std::vector<char> tabBufor;
@@ -22,10 +22,11 @@ private:
 	bool isSetPos = false;
 	void wall();
 	void drawTheWall(bool wall[], int i, int j);
+	void floor(int x, int y);
 public:
 	bool drawTheMaze();
 
-	DrawMaze(Move& move);
+	DrawMaze(Move*& moveP);
 	~DrawMaze();
 };
 

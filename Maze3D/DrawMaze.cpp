@@ -77,6 +77,7 @@ int DrawMaze::lenghtOfTheFile() {
 void DrawMaze::wall(){
 	glColor3f(1, 0.1, 0.1);
 	glBegin(GL_QUADS);
+	glNormal3f(1, 0, 0);
 	glVertex3f(0, 0, 0);
 	glVertex3f(0, sizeOfOneCell, 0);
 	glVertex3f(0, sizeOfOneCell, sizeOfOneCell);
@@ -116,6 +117,20 @@ void DrawMaze::drawTheWall(bool whereIsWall[], int j, int  i) {
 		glPopMatrix();
 	}
 }
+/*rysowanie podlogi, tylko tam gdzie we wzorze jest 'o'*/
+void DrawMaze::floor(int y, int x) {
+	glPushMatrix();
+	glTranslatef(sizeOfOneCell*x, 0, sizeOfOneCell*y);
+	glBegin(GL_QUADS); 
+	glNormal3f(0, 1, 0);
+	glColor3f(0, 0, 0);
+	glVertex3f(0, 0, 0);
+	glVertex3f(0, 0, sizeOfOneCell);
+	glVertex3f(sizeOfOneCell, 0, sizeOfOneCell);
+	glVertex3f(sizeOfOneCell, 0, 0);
+	glEnd();
+	glPopMatrix();
+}
 
 bool DrawMaze::drawTheMaze(){
 
@@ -125,44 +140,15 @@ bool DrawMaze::drawTheMaze(){
 		exit(0);
 	}
 
-
-	glBegin(GL_QUADS); //podloga
-		glColor3f(0, 0, 0);
-		glVertex3f(0, 0, 0);
-		glVertex3f(0, 0, 1*heightOfMaze*sizeOfOneCell);
-		glVertex3f(1*widthOfMaze*sizeOfOneCell, 0, 1*heightOfMaze*sizeOfOneCell);
-		glVertex3f(1*widthOfMaze*sizeOfOneCell, 0, 0);
-	glEnd();
-		
-	//glColor3f(0.3, 0.2, 0.2);
-	//glTranslatef(sizeOfOneCell/2, sizeOfOneCell/2, sizeOfOneCell/2);
-
-
-
-	
-	//glPushMatrix();
-	/*
 	for (int i = 0; i < heightOfMaze; i++) {
 		for (int j = 0; j < widthOfMaze; j++) {
-			if (netOfMaze[i][j] == 'x') {
-				glutSolidCube(sizeOfOneCell);
-			}
 			if (netOfMaze[i][j] == 's' && !isSetPos) {
 				std::cout << "ustawienie punktu poczatkowego" << i << ":" << j << std::endl;
-				move.setPos((i+1)*sizeOfOneCell+0.4, (j+1)*sizeOfOneCell+0.4);
+				move->setPos(((i + 1)*sizeOfOneCell - 0.4), (j + 1)*sizeOfOneCell - 0.4);
 				isSetPos = true;
 			}
-			glTranslatef(sizeOfOneCell, 0, 0);
-		}
-		glPopMatrix();
-		glPushMatrix();
-		glTranslatef(0, 0, sizeOfOneCell*i);
-	}
-		*/
-
-	for (int i = 0; i < heightOfMaze; i++) {
-		for (int j = 0; j < widthOfMaze; j++) {
-			if (netOfMaze[i][j] == 'o') {
+			if (netOfMaze[i][j] == 'o' || netOfMaze[i][j]=='s' || netOfMaze[i][j]=='e') { //o - pusste pole, s - punkt startowy, e - punkt koncowy
+				floor(i, j);
 				bool wall[] = {false,false,false,false };//gora, prawa, dol, lewa
 				if (i == 0) {
 					wall[0] = true;
@@ -219,8 +205,8 @@ bool DrawMaze::drawTheMaze(){
 	return true;
 }
 
-DrawMaze::DrawMaze(Move& move){
-	this->move = move;
+DrawMaze::DrawMaze(Move*& moveP){
+	move = moveP;
 	loadTheNetOfMaze();
 }
 

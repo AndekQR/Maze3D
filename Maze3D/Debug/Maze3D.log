@@ -1,5 +1,4 @@
-﻿  DrawMaze.cpp
-f:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\drawmaze.cpp(17): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
-f:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\drawmaze.cpp(70): warning C4244: "inicjowanie": konwersja z "std::streamoff" do "int", możliwa utrata danych
-f:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\drawmaze.cpp(78): warning C4305: "argument": obcięcie z "double" do "GLfloat"
+﻿  Engine.cpp
+f:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\engine.cpp(15): warning C4305: "inicjowanie": obcięcie z "double" do "GLfloat"
+f:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\engine.cpp(16): warning C4305: "inicjowanie": obcięcie z "double" do "GLfloat"
   Maze3D.vcxproj -> F:\WEAiI\semestr 5\Grafika Komputerowa\Maze3D\Debug\Maze3D.exe
