@@ -23,20 +23,17 @@ void Move::moveForward(bool move) {
 }
 
 void Move::moveBackward(bool move) {
-	if (move)
-		speed = -0.03f;
+	if (move) speed = -0.03f;
 	else speed = 0;
 }
 
 void Move::turnLeft(bool move) {
-	if (move)
-		turn = 0.05f;
+	if (move) turn = 0.05f;
 	else turn = 0;
 }
 
 void Move::turnRight(bool move) {
-	if (move)
-		turn = -0.05f;
+	if (move) turn = -0.05f;
 	else turn = 0;
 }
 

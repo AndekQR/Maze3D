@@ -24,6 +24,9 @@
     <ClCompile Include="DrawMaze.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Move.hpp">
@@ -32,10 +35,21 @@
     <ClInclude Include="DrawMaze.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="mazePattern.txt">
       <Filter>Pliki zasobów</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="C:\Users\AndekQR\Desktop\floor.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="wall.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
   </ItemGroup>
 </Project>

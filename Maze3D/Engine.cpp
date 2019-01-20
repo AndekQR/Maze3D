@@ -1,14 +1,15 @@
-#include <stdlib.h>
 #include <gl/glut.h>
 #include <math.h>
 #include "Move.hpp"
 #include "DrawMaze.h"
+#include <stdio.h>
+#include "TextureManager.h"
 
 #define ASPECT_1_1 1
 #define FPS 50
 
 Move* move = new Move;
-DrawMaze* maze = new DrawMaze(move);
+DrawMaze* maze;
 bool isMazeIsDrawn = false;
 
 /* Parametry œwiat³a i materia³ów */
@@ -18,75 +19,38 @@ GLfloat lightPos[] = { 100, 200, 0.0, 1.0 };
 GLfloat lightSpec[] = { 1, 1, 1, 1 };
 
 
+TextureManager* textureManager;
+GLuint tex[2];
+
 void display() {
-	
+
 
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //czyszczenie buforu koloru i z-buforu
 	
-	glClearColor(1.0, 1.0, 1.0, 1.0); //bialy
+	glClearColor(1.0, 1.0, 1.0, 1.0); //bialy - niebo
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	//gluLookAt(move->xPos, 0.5, move->zPos, move->xLookAt, 0.5, move->zLookAt, 0, 1, 0);
-	gluLookAt(move->xPos, 4, move->zPos, move->xLookAt, 3.7, move->zLookAt, 0, 1, 0); //widok z gory
+	gluLookAt(move->xPos, 0.5, move->zPos, move->xLookAt, 0.5, move->zLookAt, 0, 1, 0);
+	//gluLookAt(move->xPos, 4, move->zPos, move->xLookAt, 3.7, move->zLookAt, 0, 1, 0); //widok z gory
 
-	// kolor krawêdzi szeœcianu
-	//glColor3f(0.0, 0.0, 0.0);
-
-	//glutWireCube(10);
 
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+
 	
 	maze->drawTheMaze();
-	glBegin(GL_LINES);
-		glColor3f(1,0,0);
-		glVertex3f(0, 0, 0);
-		glVertex3f(100, 0, 0);
-		glColor3f(0, 1, 0);
-		glVertex3f(0, 0, 0);
-		glVertex3f(0, 100, 0);
-		glColor3f(0, 0, 1);
-		glVertex3f(0, 0, 0);
-		glVertex3f(0, 0, 100);
-	glEnd();
 
-	glFlush();
+
 	glutSwapBuffers();
 
 }
 
 void reshape(int width, int height) {
-	/*
-	glViewport(0, 0, width, height); //obszar renderingu ca³e okno
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-
-	if (ASPECT_1_1 == 1) { //parametry bry³y obcinania
-		if (width >= height && height>0) {
-			glFrustum(-2.0 * width / height, 2.0 * width / height, -2.0, 2.0, 1.0, 5.0);
-		}
-		else {
-			if (height > width && width>0) {
-				glFrustum(-2.0, 2.0, -2.0 * height / width, 2.0 * height / width, 1.0, 5.0);
-			}
-		}
-	}
-	else {
-		glFrustum(-2.0, 2.0, -2.0, 2.0, 1.0, 5.0);
-	}
-
-	*/
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(75, 1, 0.01, 100);
-	
-
-	display();
 
 	if (height == 0)	height = 1;
-		glViewport(0, 0, width, height);
+	
+	glViewport(0, 0, width, height);
 
 	/* Ustawienie obszaru obcinania z uwzglêdnieniem proporcji okna */
 	glMatrixMode(GL_PROJECTION);
@@ -160,7 +124,6 @@ void timer(int val) {
 	//aktualizacja pozycji kamery na podstawie prêdkoœci kamery
 	move->xPos = move->xPos + move->speed * sin(move->angle);
 	move->zPos = move->zPos + move->speed * cos(move->angle);
-	std::cout << move->xPos << std::endl;
 
 	//aktualizacja kierunku patrzenia kamery na podstawie jej pozycji
 	move->xLookAt = (float)(move->xPos + sin(move->angle));
@@ -191,19 +154,17 @@ void light() {
 	glMaterialfv(GL_FRONT, GL_SPECULAR, lightSpec);
 	glMateriali(GL_FRONT, GL_SHININESS, 64);
 
-	glEnable(GL_COLOR_MATERIAL);
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+
 }
-
-
-
-
 
 
 int main(int argc, char *argv[]) {
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); //podwojne buforowanie, ostatni parametr do z-bufora
+	
 	glutInitWindowSize(600, 600);
 	glutCreateWindow("Maze3D");
 	glutDisplayFunc(display); 
@@ -213,14 +174,24 @@ int main(int argc, char *argv[]) {
 	glutMotionFunc(mouseMotion); //obsluga ruchu myszki
 	glutSpecialFunc(specialKeys); //strzalki
 	glutSpecialUpFunc(specialUpKeys);//obsluga puszczenia klawiszy 
-	glutTimerFunc(1000 / FPS, timer, 0); //timer
-
+	
+	glEnable(GL_NORMALIZE);
+	glEnable(GL_DEPTH_TEST);//wlaczenie bufora z
 	light();
 
+	textureManager = TextureManager::Inst();
+	glGenTextures(2, tex);
+	textureManager->LoadTexture("floor.png", tex[0]);
+	textureManager->LoadTexture("wall.jpg", tex[1]);
 
-	glEnable(GL_DEPTH_TEST);//wlaczenie bufora z
-	//glDepthFunc(GL_GEQUAL);
-	//glDepthRange(0, 0.1);
+	maze = new DrawMaze(move, textureManager, tex);
+
+	
+	glutTimerFunc(1000 / FPS, timer, 0); //timer
+
+
+
+
 	
 
 	glutMainLoop();

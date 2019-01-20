@@ -1,4 +1,5 @@
-#include "DrawMaze.h"
+ï»¿#include "DrawMaze.h"
+
 
 std::ifstream plik("mazePattern.txt", std::ios::in);
 
@@ -6,7 +7,7 @@ std::ifstream plik("mazePattern.txt", std::ios::in);
 
 void DrawMaze::loadTheNetOfMaze(){
 	if (!plik.good()){ //sprawdz czy plik jest otwarty
-		perror("B³¹d otwarcia pliku ze wzorem labiryntu!");
+		perror("BÅ‚Ä…d otwarcia pliku ze wzorem labiryntu!");
 	}
 	else {
 		while (!plik.eof()) { //pobranie danych do bufora
@@ -14,9 +15,6 @@ void DrawMaze::loadTheNetOfMaze(){
 			tabBufor.push_back(charBufor); //i wpisanie go do vectora
 		}
 
-		for (int j = 0; j < tabBufor.size(); j++) {
-			std::cout << tabBufor[j] << "|";
-		}
 	}
 
 	int numberOfData = 0;
@@ -76,18 +74,30 @@ int DrawMaze::lenghtOfTheFile() {
 
 void DrawMaze::wall(){
 	glColor3f(1, 0.1, 0.1);
+	
+	glEnable(GL_TEXTURE_2D);
+	textureManager->BindTexture(tex[1]);
 	glBegin(GL_QUADS);
-	glNormal3f(1, 0, 0);
-	glVertex3f(0, 0, 0);
-	glVertex3f(0, sizeOfOneCell, 0);
-	glVertex3f(0, sizeOfOneCell, sizeOfOneCell);
-	glVertex3f(0, 0, sizeOfOneCell);
-	glEnd();
+		glNormal3f(1, 0, 0);
 
+		glTexCoord2f(0, 0);
+		glVertex3f(0, 0, 0);
+
+		glTexCoord2f(0, 1);
+		glVertex3f(0, sizeOfOneCell, 0);
+
+		glTexCoord2f(1, 1);
+		glVertex3f(0, sizeOfOneCell, sizeOfOneCell);
+
+		glTexCoord2f(1, 0);
+		glVertex3f(0, 0, sizeOfOneCell);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
 }
 
-//szerokosc labiryntu to oœ z
-//wysokosc labiryntu to os x
+/*szerokosc labiryntu to oÅ› z, wysokosc labiryntu to os x*/
+
+/* w plik ze wzorem labiryntu szerokosc to y, a wysokosc labiryntu to x :)*/
 
 void DrawMaze::drawTheWall(bool whereIsWall[], int j, int  i) {
 	if (whereIsWall[0]) {//gora
@@ -119,20 +129,34 @@ void DrawMaze::drawTheWall(bool whereIsWall[], int j, int  i) {
 }
 /*rysowanie podlogi, tylko tam gdzie we wzorze jest 'o'*/
 void DrawMaze::floor(int y, int x) {
-	glPushMatrix();
-	glTranslatef(sizeOfOneCell*x, 0, sizeOfOneCell*y);
-	glBegin(GL_QUADS); 
-	glNormal3f(0, 1, 0);
-	glColor3f(0, 0, 0);
-	glVertex3f(0, 0, 0);
-	glVertex3f(0, 0, sizeOfOneCell);
-	glVertex3f(sizeOfOneCell, 0, sizeOfOneCell);
-	glVertex3f(sizeOfOneCell, 0, 0);
-	glEnd();
-	glPopMatrix();
+
+	glEnable(GL_TEXTURE_2D);
+	textureManager->BindTexture(tex[0]);
+		glPushMatrix();
+		glTranslatef(sizeOfOneCell*x, 0, sizeOfOneCell*y);
+		glBegin(GL_QUADS);
+		glNormal3f(1, 0, 0);
+
+		glTexCoord2f(0, 0);
+		glVertex3f(0, 0, 0);
+
+		glTexCoord2f(0, 1);
+		glVertex3f(0, 0, sizeOfOneCell);
+
+		glTexCoord2f(1, 1);
+		glVertex3f(sizeOfOneCell, 0, sizeOfOneCell);
+
+		glTexCoord2f(1, 0);
+		glVertex3f(sizeOfOneCell, 0, 0);
+		glEnd();
+		glPopMatrix();
+		glDisable(GL_TEXTURE_2D);
 }
 
+
 bool DrawMaze::drawTheMaze(){
+
+
 
 	if (heightOfMaze < 2 || widthOfMaze < 2) {
 		std::cout << "Stworz wiekszy labirynt!" << std::endl;
@@ -200,17 +224,26 @@ bool DrawMaze::drawTheMaze(){
 		}
 	}
 
-	//glPopMatrix();
-
 	return true;
 }
 
-DrawMaze::DrawMaze(Move*& moveP){
+
+
+
+DrawMaze::DrawMaze(Move*& moveP, TextureManager* textureManager, GLuint* tex){
+
+	this->textureManager = textureManager;
+	this->tex = tex;
+
+	
 	move = moveP;
+	
+
 	loadTheNetOfMaze();
 }
 
 
 DrawMaze::~DrawMaze(){
-
+	textureManager->UnloadAllTextures();
+	glDisable(GL_TEXTURE_2D);
 }

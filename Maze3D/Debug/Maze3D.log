@@ -1,4 +1,5 @@
-﻿  Engine.cpp
-f:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\engine.cpp(15): warning C4305: "inicjowanie": obcięcie z "double" do "GLfloat"
-f:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\engine.cpp(16): warning C4305: "inicjowanie": obcięcie z "double" do "GLfloat"
-  Maze3D.vcxproj -> F:\WEAiI\semestr 5\Grafika Komputerowa\Maze3D\Debug\Maze3D.exe
+﻿  DrawMaze.cpp
+d:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\drawmaze.cpp(68): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
+d:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\drawmaze.cpp(76): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+d:\weaii\semestr 5\grafika komputerowa\maze3d\maze3d\drawmaze.cpp(171): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Maze3D.vcxproj -> D:\WEAiI\semestr 5\Grafika Komputerowa\Maze3D\Debug\Maze3D.exe
