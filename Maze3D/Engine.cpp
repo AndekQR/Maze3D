@@ -20,7 +20,8 @@ GLfloat lightSpec[] = { 1, 1, 1, 1 };
 
 
 TextureManager* textureManager;
-GLuint tex[2];
+GLuint tex[3];
+GLUquadricObj* quadric = NULL; //do oteksturowanie glSphere
 
 void display() {
 
@@ -37,6 +38,12 @@ void display() {
 
 
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+	glEnable(GL_TEXTURE_2D);
+	textureManager->BindTexture(tex[2]);
+
+	gluSphere(quadric, 210, 100, 100);
+	
+	glDisable(GL_TEXTURE_2D);
 
 	
 	maze->drawTheMaze();
@@ -179,10 +186,17 @@ int main(int argc, char *argv[]) {
 	glEnable(GL_DEPTH_TEST);//wlaczenie bufora z
 	light();
 
+	quadric = gluNewQuadric();         // Create A Pointer To The Quadric Object
+	gluQuadricDrawStyle(quadric, GLU_FILL);
+	gluQuadricTexture(quadric, GL_TRUE);      // Create Texture Coords   
+	gluQuadricNormals(quadric, GLU_SMOOTH);   // Create Smooth Normals  
+	gluQuadricOrientation(quadric, GLU_INSIDE);
+
 	textureManager = TextureManager::Inst();
-	glGenTextures(2, tex);
+	glGenTextures(3, tex);
 	textureManager->LoadTexture("floor.png", tex[0]);
 	textureManager->LoadTexture("wall.jpg", tex[1]);
+	textureManager->LoadTexture("sky.png", tex[2]);
 
 	maze = new DrawMaze(move, textureManager, tex);
 
